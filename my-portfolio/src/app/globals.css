@@ -1,0 +1,210 @@
+@import "tailwindcss";
+
+/* Dark mode is controlled by the "dark" class on <html> (see the theme toggle). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------ */
+/*  🎨 Colours — tweak these to restyle the whole site                */
+/* ------------------------------------------------------------------ */
+:root {
+  --background: #fafafa;
+  --foreground: #0a0a0a;
+  --muted: #525252; /* paragraph text */
+  --subtle: #737373; /* labels, nav links */
+  --faint: #e5e5e5;
+  --border: rgb(0 0 0 / 0.09);
+  --card: #ffffff;
+  --card-2: #f5f5f5;
+  --card-inset: inset 0 1px 0 0 rgb(255 255 255 / 0.9);
+  --card-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 16px 32px -20px rgb(0 0 0 / 0.25);
+  --pill: #f4f4f5;
+  --hl-from: #d97706; /* highlight gradient start */
+  --hl-to: #9333ea; /* highlight gradient end */
+  --fade-from: #a3a3a3;
+  --fade-to: #e5e5e5;
+  --accent: #7c3aed;
+}
+
+.dark {
+  --background: #000000;
+  --foreground: #fafafa;
+  --muted: #a3a3a3;
+  --subtle: #737373;
+  --faint: #1c1c1c;
+  --border: rgb(255 255 255 / 0.08);
+  --card: #030303;
+  --card-2: #0f0f0f;
+  --card-inset: inset 0 1px 0 0 rgb(255 255 255 / 0.05);
+  --card-shadow: 0 24px 48px -24px rgb(0 0 0 / 0.9);
+  --pill: #0d0d0d;
+  --hl-from: #fcd34d;
+  --hl-to: #c084fc;
+  --fade-from: #5c5c5c;
+  --fade-to: #1a1a1a;
+  --accent: #8b5cf6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-faint: var(--faint);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-pill: var(--pill);
+  --color-accent: var(--accent);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+}
+
+/* ------------------------------------------------------------------ */
+/*  ✨ Animations                                                      */
+/* ------------------------------------------------------------------ */
+@theme {
+  --animate-marquee-left: marquee-left 40s linear infinite;
+  --animate-marquee-right: marquee-right 40s linear infinite;
+  --animate-enter: enter 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-beam: beam 5s ease-in-out infinite;
+  --animate-beam-y: beam-y 6s ease-in-out 1.5s infinite;
+  --animate-draw: draw 1.8s cubic-bezier(0.65, 0, 0.35, 1) 0.4s both;
+  --animate-wave: wave 1.2s ease-in-out;
+
+  @keyframes marquee-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
+  @keyframes marquee-right {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(12px); filter: blur(6px); }
+    to { opacity: 1; transform: none; filter: blur(0); }
+  }
+  @keyframes beam {
+    0% { transform: translateX(-100%); opacity: 0; }
+    20%, 70% { opacity: 1; }
+    100% { transform: translateX(260%); opacity: 0; }
+  }
+  @keyframes beam-y {
+    0% { transform: translateY(-100%); opacity: 0; }
+    20%, 70% { opacity: 1; }
+    100% { transform: translateY(260%); opacity: 0; }
+  }
+  @keyframes draw {
+    from { stroke-dashoffset: 1; }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes wave {
+    0%, 100% { rotate: 0deg; }
+    15%, 45% { rotate: 14deg; }
+    30% { rotate: -8deg; }
+    60% { rotate: -4deg; }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  🧩 Reusable utilities                                              */
+/* ------------------------------------------------------------------ */
+@utility card {
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background-image: linear-gradient(180deg, var(--card-2), var(--card));
+  box-shadow: var(--card-inset), var(--card-shadow);
+}
+
+/* The yellow → purple text used for **highlighted** words */
+@utility text-highlight {
+  background-image: linear-gradient(90deg, var(--hl-from), var(--hl-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Big faded headline ("Stay tuned...", "Thanks for visiting") */
+@utility text-faded {
+  background-image: linear-gradient(180deg, var(--fade-from), var(--fade-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility link-wavy {
+  color: var(--foreground);
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+  text-decoration-color: var(--subtle);
+  transition: text-decoration-color 0.2s ease;
+  &:hover {
+    text-decoration-color: var(--hl-to);
+  }
+}
+
+@utility fade-edges-x {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 14%, black 86%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 14%, black 86%, transparent);
+}
+
+@layer components {
+  /* Home page bento grid: 2 columns on phones, 4 on bigger screens */
+  .bento {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(10.5rem, auto);
+    grid-template-areas:
+      "stack  stack"
+      "github img1"
+      "github img2"
+      "social social"
+      "code   code";
+  }
+  @media (min-width: 640px) {
+    .bento {
+      grid-template-columns: 1fr 1fr 2.15fr 1fr;
+      grid-template-rows: repeat(3, 13.5rem);
+      grid-template-areas:
+        "img1   stack  stack  stack"
+        "github github social social"
+        "github github code   img2";
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                               */
+/* ------------------------------------------------------------------ */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+::selection {
+  background: color-mix(in oklab, var(--hl-to) 35%, transparent);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
