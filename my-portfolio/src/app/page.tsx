@@ -6,9 +6,12 @@ import { ChatButton } from "@/components/chat-widget";
 import { RichText } from "@/components/rich-text";
 import { ArrowLink, Reveal } from "@/components/ui";
 import { portfolio } from "@/data/portfolio";
+import { getLaunchInfo } from "@/lib/launch";
 import { chatUrl, email, linkedin } from "@/lib/site";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const launch = await getLaunchInfo();
+
   // "Find me on LinkedIn @you, drop an Email or chat with me live". Only filled-in parts show.
   const contact: ReactNode[] = [];
   if (linkedin) {
@@ -82,7 +85,7 @@ export default function HomePage() {
           <span className="underline decoration-foreground/40 underline-offset-[6px]">Tech Stack</span>
           <span aria-hidden>🛠️</span>
         </h2>
-        <BentoGrid />
+        <BentoGrid launch={launch} />
       </Reveal>
 
       <Footer />

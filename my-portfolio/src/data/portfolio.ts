@@ -72,8 +72,15 @@ export const portfolio: Portfolio = {
     username: "wentian506",
   },
 
-  // Real-time coding timer. It goes live as soon as you add the
-  // WAKATIME_API_KEY environment variable (GUIDE.md, Step 4).
+  // Live clock on the home page. It starts by itself the moment your site goes
+  // live (your first Vercel deploy) and keeps counting, even when you update the site.
+  // Leave "" for automatic, or set a fixed start like "2026-10-05T18:30:00+05:30".
+  launch: {
+    date: "",
+  },
+
+  // Optional extra: also show your real coding time on the clock card once you
+  // add the WAKATIME_API_KEY environment variable (GUIDE.md, Step 3).
   wakatime: {
     showProject: false, // true = also show which project you're coding right now
     shareUrl: "", // not needed when you use WAKATIME_API_KEY

@@ -3,7 +3,7 @@
  * time you spend coding in VS Code automatically.
  *
  * How it works:
- *   1. You add the WAKATIME_API_KEY environment variable (GUIDE.md, Step 4).
+ *   1. You add the WAKATIME_API_KEY environment variable (GUIDE.md, Step 3).
  *   2. /api/coding-time (src/app/api/coding-time/route.ts) asks WakaTime for
  *      your numbers. The key stays on the server, visitors never see it.
  *   3. The Coding Time card asks /api/coding-time every minute and, while

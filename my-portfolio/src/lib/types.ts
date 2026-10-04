@@ -82,10 +82,18 @@ export interface Portfolio {
     /** Your GitHub username. Powers the live stats card. */
     username: string;
   };
+  launch: {
+    /**
+     * The live clock on the home page counts up from the moment your site first
+     * went live. It finds your first Vercel deploy by itself, so leave this "".
+     * Want a fixed start instead? e.g. "2026-10-05T18:30:00+05:30"
+     */
+    date: string;
+  };
   wakatime: {
     /**
-     * The real-time coding timer turns on by itself once you add the
-     * WAKATIME_API_KEY environment variable (GUIDE.md, Step 4).
+     * Optional extra: once you add the WAKATIME_API_KEY environment variable, the
+     * clock card also shows your real coding time (GUIDE.md, Step 3).
      * true = also show the name of the project you're coding in right now.
      */
     showProject: boolean;

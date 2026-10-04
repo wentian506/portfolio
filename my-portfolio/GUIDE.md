@@ -12,7 +12,7 @@ Hi Mehakdeep! This guide takes you from "files on my computer" to "live website"
 | ✅ | **Resume PDF** with a **Get Resume 💻** button on About, just like the reference site (`public/resume.pdf`) |
 | ✅ | **LinkedIn, GitHub and Email** connected, plus **live GitHub stats** |
 | ✅ | **Your Connect chat room** is connected: a 💬 button on every page opens it inside the site |
-| ✅ | **Real-time coding timer** is built. It only needs your free WakaTime key (Step 3) |
+| ✅ | **Live clock** on Home: starts by itself the moment your site goes live, and keeps ticking (Step 3) |
 | ✅ | Your **7 real projects** from GitHub, including **Connect**, your chat app |
 
 ## ⏳ What's left for you
@@ -20,9 +20,9 @@ Hi Mehakdeep! This guide takes you from "files on my computer" to "live website"
 | | |
 | --- | --- |
 | ⏳ | Check the lines marked `← CHECK` in `src/data/portfolio.ts` (Step 2) |
-| ⏳ | Turn on the **real-time coding timer** (Step 3, about 10 min) |
 | ⏳ | **Put the site online** (Step 5, about 15 min) |
 | ➕ | Optional: add Twitter/X and Instagram, and your CGPA (Step 2) |
+| ➕ | Optional: also show your real coding time on the clock card (Step 3) |
 
 ---
 
@@ -126,30 +126,30 @@ The **Get Resume** button opens `public/resume.pdf`. I made it from your details
 
 ---
 
-## Step 3: Turn on the real-time coding timer (about 10 min)
+## Step 3: Your live clock (works by itself)
 
-**WakaTime** (free) records your coding time in VS Code automatically. Once it's connected, the **Coding Time** card shows:
-- your **total hours** coded
-- **today's time**, plus the language you used most
-- while you're coding: a green **LIVE · Coding now in VS Code** badge, with today's clock **ticking every second**
+The clock card on Home shows how long your site has been live, e.g. **12 days · Live since launch · 12d 04:22:09**,
+ticking every second. There's nothing to set up:
 
-The numbers refresh every minute.
+- **It starts the moment your site first goes live on Vercel.** It finds your first deploy on GitHub by itself.
+- **Updates don't reset it.** It keeps counting from your first deploy, however often you update the site.
+- On your computer (`npm run dev`) it counts from when you started the site. That's normal.
+
+**Want a fixed start date instead?** In `portfolio.ts`, fill in `launch.date`, e.g.
+`date: "2026-10-05T18:30:00+05:30"` (`+05:30` means India time).
+
+### Optional: also show your real coding time
+With a free **WakaTime** key, the bottom line of the clock card also shows your coding time, e.g.
+**"Coding now · 2:13:48 today"** while you're coding, or "Coded today · 2h 13m".
 
 1. **Sign up** at <https://wakatime.com/signup>. "Sign up with GitHub" is easiest.
 2. **Install the VS Code extension:** press `Ctrl + Shift + X`, search **WakaTime**, click **Install**.
    When it asks for your **API key**, copy it from <https://wakatime.com/settings/api-key> and paste it in.
-3. **Connect it to your website:** in VS Code, right-click **`.env.example`** → **Copy**, then paste, and rename the copy
-   to **`.env.local`**. Open `.env.local` and paste your key after the `=` sign:
-   ```
-   WAKATIME_API_KEY=waka_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-   ```
-4. Restart the site: in the terminal press `Ctrl + C`, then run `npm run dev` again.
-   Code for a couple of minutes, and the card goes **LIVE**. 🟢
-5. When you put the site online (Step 5), add the **same key on Vercel**.
+3. **On your computer:** right-click **`.env.example`** → **Copy**, paste, and rename the copy to **`.env.local`**.
+   Paste your key after `WAKATIME_API_KEY=`, then restart `npm run dev`.
+4. **On Vercel:** go to **Settings → Environment Variables**, add `WAKATIME_API_KEY` with your key, then **Redeploy**.
 
 > ⚠️ **Never paste the API key into `portfolio.ts`**. That file is public. `.env.local` is never uploaded.
-> 👀 Want visitors to see *which project* you're coding? Set `showProject: true` under `wakatime` in `portfolio.ts`.
-> "Coding now" shows while WakaTime has heard from VS Code in the last 5 minutes.
 
 ---
 
@@ -219,11 +219,11 @@ The first time, a window asks you to **sign in to GitHub**. Allow it.
 ### 5.3 Deploy on Vercel
 1. Go to <https://vercel.com/signup> and choose **Continue with GitHub**.
 2. Click **Add New… → Project**. Next to your `portfolio` repo, click **Import**.
-3. Leave everything as it is (Vercel detects Next.js), then open **Environment Variables** and add:
-   - Name: `WAKATIME_API_KEY`. Value: your WakaTime key (Step 3).
-   - (Optional) Name: `GITHUB_TOKEN`. Value: a token from <https://github.com/settings/tokens>. This helps if
-     GitHub numbers ever show "–".
-4. Click **Deploy** and wait about 1 minute. 🎉 Your site is live at an address like `https://portfolio-xxxx.vercel.app`.
+3. Leave everything as it is. Vercel detects Next.js, and **no settings are needed**. Optional, under **Environment Variables**:
+   - `GITHUB_TOKEN`: a token from <https://github.com/settings/tokens>. It helps if GitHub numbers ever show "–".
+   - `WAKATIME_API_KEY`: only if you set up the optional coding time (Step 3).
+4. Click **Deploy** and wait about 1 minute. 🎉 Your site is live at an address like `https://portfolio-xxxx.vercel.app`,
+   and your **live clock starts ticking** from that moment.
 5. **Nicer address:** go to your project → **Settings → Domains** and set something like `mehakdeep.vercel.app`,
    if it's available.
 
@@ -277,7 +277,7 @@ my-portfolio/
     ├── data/portfolio.ts     ← ✏️ ALL your content
     ├── app/                  ← pages: Home, Projects, About, plus api/coding-time
     ├── components/           ← navbar, cards, chat window…
-    └── lib/                  ← GitHub + WakaTime data
+    └── lib/                  ← GitHub data, live clock, WakaTime
 ```
 
 ---
@@ -288,8 +288,8 @@ my-portfolio/
 | --- | --- |
 | `npm` is not recognized | Install Node.js, then **close and reopen VS Code**. |
 | Red error page after editing | A quote, comma or bracket is missing. Read the line number in the terminal, or press `Ctrl + Z`. |
-| Coding time shows `--` | The file must be named exactly `.env.local` (not `.env.local.txt`). Restart `npm run dev`. Code for a few minutes with WakaTime on. On Vercel, add the variable and **Redeploy**. |
-| Timer never says LIVE | Check the WakaTime icon in the VS Code status bar shows your time. "Coding now" appears within about a minute of typing. |
+| Clock started again from 0 after an update | Make sure the site is deployed from GitHub (Step 5). Or set `launch.date` in `portfolio.ts` to lock the start date. |
+| Optional coding-time line doesn't show | The file must be named exactly `.env.local` (not `.env.local.txt`). Restart `npm run dev`. On Vercel, add `WAKATIME_API_KEY` and **Redeploy**. |
 | Chat stuck on "Connecting…" | The free Render server is waking up. Wait up to a minute, or click ↗ to open the room in a new tab. |
 | GitHub numbers show `–` | GitHub's free API limit was hit. It recovers within an hour, or add `GITHUB_TOKEN`. |
 | Vercel says "No Next.js version detected" | You uploaded the `my-portfolio` folder itself instead of its contents. In your Vercel project's **Settings**, find **Root Directory**, set it to `my-portfolio`, then redeploy. |
@@ -302,7 +302,7 @@ my-portfolio/
 
 - [ ] Experience lines and project dates checked (`← CHECK`)
 - [ ] Resume opened and checked (About → **Get Resume**)
-- [ ] WakaTime key in `.env.local` **and** on Vercel (Step 3)
+- [ ] After deploying, the clock card on Home says **Live since launch** and is ticking (Step 3)
 - [ ] Joined your chat room once from your phone and bookmarked it (Step 4)
 - [ ] Optional: Twitter/X and Instagram added, or their lines deleted
 - [ ] Site link added to LinkedIn, GitHub and your resume (Step 5.4)

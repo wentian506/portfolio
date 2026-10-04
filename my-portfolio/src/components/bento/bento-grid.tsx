@@ -1,4 +1,5 @@
 import { portfolio } from "@/data/portfolio";
+import type { LaunchInfo } from "@/lib/launch";
 import { socials } from "@/lib/site";
 import { CodingTimeCard } from "./coding-time-card";
 import { GithubCard } from "./github-card";
@@ -7,14 +8,17 @@ import { SocialsCard } from "./socials-card";
 import { StacksCard } from "./stacks-card";
 
 /** The home page grid. Layout lives in globals.css (.bento). */
-export function BentoGrid() {
+export function BentoGrid({ launch }: { launch: LaunchInfo }) {
+  // The optional coding-time line only asks WakaTime when it has been set up.
+  const wakatime = Boolean(process.env.WAKATIME_API_KEY || portfolio.wakatime.shareUrl);
+
   return (
     <div className="bento mt-8">
       <ImageCard src={portfolio.artwork.left} area="img1" />
       <StacksCard items={portfolio.techStack} />
       <GithubCard username={portfolio.github.username} />
       <SocialsCard socials={socials} />
-      <CodingTimeCard />
+      <CodingTimeCard launch={launch} wakatime={wakatime} />
       <ImageCard src={portfolio.artwork.right} area="img2" />
     </div>
   );
